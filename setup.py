@@ -24,7 +24,11 @@ setup(name='clpipe',
                         'dcm2bids',
                         'nipype',
                         'templateflow',
-                        'deepdiff'],
+                        'deepdiff',
+                        'pycap',
+                        'xnat',
+                        'pyxnat'
+                        'dax @ git+ssh://git@github.com/DecisionNeurosciencePsychopathology/dax.git'],
       entry_points='''
       [console_scripts]
       fmriprep_process=clpipe.fmri_preprocess:fmriprep_process
@@ -52,6 +56,7 @@ setup(name='clpipe',
       fsl_onset_extract=clpipe.fsl_onset_extract:fsl_onset_extract
       reho_extract=clpipe.reho_extract:reho_extract
       t2star_extract=clpipe.t2star_extract:t2star_extract
+      heud2bids=clpipe.run_heudiconv:convert2bids
       ''',
       zip_safe=False
       )
