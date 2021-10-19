@@ -27,8 +27,7 @@ setup(name='clpipe',
                         'deepdiff',
                         'pycap',
                         'xnat',
-                        'pyxnat',
-                        'dax @ git+ssh://git@github.com/DecisionNeurosciencePsychopathology/dax.git'],
+                        'pyxnat'],
       entry_points='''
       [console_scripts]
       fmriprep_process=clpipe.fmri_preprocess:fmriprep_process
