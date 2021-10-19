@@ -27,7 +27,7 @@ setup(name='clpipe',
                         'deepdiff',
                         'pycap',
                         'xnat',
-                        'pyxnat'
+                        'pyxnat',
                         'dax @ git+ssh://git@github.com/DecisionNeurosciencePsychopathology/dax.git'],
       entry_points='''
       [console_scripts]
