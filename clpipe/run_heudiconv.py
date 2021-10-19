@@ -93,12 +93,17 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
 #    singularity_string = '''unset PYTHONPATH; {templateflow1} singularity run -B {templateflow2}{bindPaths} {batchcommands} {fmriprepInstance} {bidsDir} {outputDir} participant ''' \
 #                         '''--participant-label {participantLabels} -w {workingdir} --fs-license-file {fslicense} {threads} {otheropts}'''
 
+    # if there is no heudiconv container specified, assume cli
+    if config.config['DICOMToBIDSOptions']['HeudiconvPath'] == '':
+        run_str = 'heudiconv'
+    else:
+        run_str = 'singularity run --cleanenv -B {proj_dir},{home_dir} {heudiconv}'.format() #TODO: finish this pip option
     if session_toggle and not longitudinal:
         # --cleanenv
-        heud_string = '''singularity run --cleanenv -B {proj_dir},{home_dir} {heudiconv} -d {dicom_dir} -s {subject} -ss {session} -o {bids_dir} -f {conv_config_file} -b -c dcm2niix'''
+        heud_string = run_str + ''' -d {dicom_dir} -s {subject} -ss {session} -o {bids_dir} -f {conv_config_file} -b -c dcm2niix'''
     else:
         # --cleanenv
-        heud_string = '''singularity run --cleanenv -B {proj_dir},{home_dir} {heudiconv} -d {dicom_dir} -s {subject} -o {bids_dir} -f {conv_config_file} -b -c dcm2niix'''
+        heud_string = run_str + ''' -d {dicom_dir} -s {subject} -o {bids_dir} -f {conv_config_file} -b -c dcm2niix'''
 
     if overwrite:
         heud_string = heud_string + " --overwrite"
@@ -150,7 +155,7 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
             parent_path = str(abs_path.parent)
             heud_path = dicom_dir + config.config['DICOMToBIDSOptions']['HeudiconvFormatString']
             job_id = 'convert_sub-' + i['subject']
-            job1 = Job(job_id, heud_string.format(
+            formatted_str = heud_string.format(
                 #dicom_dir=folders[ind],
                 #dicom_dir=dicom_dir_format,
                 #proj_dir = config.config["ProjectDirectory"],
@@ -161,7 +166,8 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
                 subject=i['subject'],
                 conv_config_file=config.config['DICOMToBIDSOptions']['ConversionConfig'],
                 bids_dir=config.config['DICOMToBIDSOptions']['BIDSDirectory']
-            ))
+            )
+            job1 = Job(job_id, formatted_str)
         batch_manager.addjob(job1)
 
     batch_manager.compilejobstrings()
