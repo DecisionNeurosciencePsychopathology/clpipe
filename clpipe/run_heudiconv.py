@@ -94,10 +94,10 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
 #                         '''--participant-label {participantLabels} -w {workingdir} --fs-license-file {fslicense} {threads} {otheropts}'''
 
     # if there is no heudiconv container specified, assume cli
-    if config.config['DICOMToBIDSOptions']['HeudiconvPath'] == '':
-        run_str = 'heudiconv'
-    else:
-        run_str = 'singularity run --cleanenv -B {proj_dir},{home_dir} {heudiconv}'.format() #TODO: finish this pip option
+    #if config.config['DICOMToBIDSOptions']['HeudiconvPath'] == '':
+    #    #run_str = 'heudiconv'
+    #else:
+    #    run_str = 'singularity run --cleanenv -B {proj_dir},{home_dir} {heudiconv}'.format() #TODO: finish this pip option
     if session_toggle and not longitudinal:
         # --cleanenv
         heud_string = run_str + ''' -d {dicom_dir} -s {subject} -ss {session} -o {bids_dir} -f {conv_config_file} -b -c dcm2niix'''
@@ -111,9 +111,9 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
     if asc_num:
         heud_string = heud_string + " -g accession_number"
 
-    #heud_string.format(heudiconv = config.config['DICOMToBIDSOptions']['HeudiconvPath'])
-    #formatted_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
-    #dicom_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
+    heud_string.format(heudiconv = config.config['DICOMToBIDSOptions']['HeudiconvPath'])
+    formatted_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
+    dicom_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
 
     batch_manager = BatchManager(config.config['BatchConfig'], config.config['DICOMToBIDSOptions']['LogDirectory'])
     batch_manager.createsubmissionhead()
