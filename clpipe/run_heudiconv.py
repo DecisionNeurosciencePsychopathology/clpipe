@@ -112,8 +112,8 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
         heud_string = heud_string + " -g accession_number"
 
     heud_string.format(heudiconv = config.config['DICOMToBIDSOptions']['HeudiconvPath'])
-    formatted_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
-    dicom_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString'])
+    formatted_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString']
+    dicom_dir = config.config['DICOMToBIDSOptions']['HeudiconvFormatString']
 
     batch_manager = BatchManager(config.config['BatchConfig'], config.config['DICOMToBIDSOptions']['LogDirectory'])
     batch_manager.createsubmissionhead()
