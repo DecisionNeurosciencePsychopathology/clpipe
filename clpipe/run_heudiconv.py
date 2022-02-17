@@ -61,16 +61,21 @@ def convert2bids(dicom_dir=None, dicom_dir_format=None, bids_dir = None, conv_co
     if subject is not None:
         sub_inds = [ind for ind, x in enumerate(sub_sess_list) if x['subject'] == subject]
 
-    if session is not None:
-        sess_inds = [ind for ind, x in enumerate(sub_sess_list) if x['session'] == session]
-
     if subjects is not None:
         subSet = None
         if os.path.exists(subjects):
             with open(subjects, 'r') as subFile:
                 subList = subFile.readlines()
                 subSet = {sub.strip() for sub in subList}
-        sub_inds = [ind for ind, x in enumerate(sub_sess_list) if x['subject'] in subSet]
+        subs_inds = set([ind for ind, x in enumerate(sub_sess_list) if x['subject'] in subSet])
+        if subject != None:
+            sub_inds = list(set.union(subs_inds, set(sub_inds)))
+        else:
+            sub_inds = list(subs_inds)
+        sub_inds = list(sub_inds)
+
+    if session is not None:
+        sess_inds = [ind for ind, x in enumerate(sub_sess_list) if x['session'] == session]
 
 #    if sessions is not None:
 #        pass
